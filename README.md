@@ -1,88 +1,34 @@
-# Formal Conjectures — Palomar Submission Base (`palomar_prepare`)
+# Disproof of Firoozbakht's Conjecture on OEIS A086766
 
-[![CI](https://github.com/google-deepmind/formal-conjectures/actions/workflows/ci.yml/badge.svg)](https://github.com/google-deepmind/formal-conjectures/actions/workflows/ci.yml)
+This repository packages a Lean 4 / Mathlib disproof of **Farideh Firoozbakht's conjecture on
+OEIS A086766** (`OeisA86766.conjecture2`) for the [Palomar Registry](https://palomar-registry.org/),
+matching [`google-deepmind/formal-conjectures`](https://github.com/google-deepmind/formal-conjectures)
+(`FormalConjectures/OEIS/86766.lean`, commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`).
 
-This branch (`palomar_prepare`) is a minimal, pre-bumped template derived from
-[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) for packaging a newly
-found formal proof into a [Palomar Registry](https://palomar-registry.org/) submission.
+## Result
 
-All open-problem directories (`FormalConjectures/`), website assets, and problem-tracking scripts
-have been stripped so that you only need to port the single solved problem and its proof.
+For $n \ge 1$ with $d$ decimal digits, let $a(n)$ be the least $r \ge 1$ such that the
+$r$-fold decimal concatenation of $n$ followed by the digit $1$,
+$$P_n(r) = 10 n \sum_{i=0}^{r-1} (10^d)^i + 1,$$
+is prime, or $0$ if no such $r$ exists. Farideh Firoozbakht (Jan 7, 2015, OEIS A086766)
+conjectured that $a(n) \ne 0$ whenever $n$ is not a power of $10$.
 
-## What is included
+We disprove this conjecture with two explicit 6-digit counterexamples ($d = 6$, neither a power
+of $10$):
 
-- **`FormalConjecturesForMathlib/`**: Reusable mathematical definitions and proved lemmas from
-  Formal Conjectures, already bumped to the current Lean / Mathlib release (`v4.36.0`). Contains
-  no `sorry`.
-- **`FormalConjecturesUtil/`**: Shared attributes, metadata helpers, and style linters.
-- **`FormalConjecturesTest/`**: Tests for `FormalConjecturesUtil`.
-- **[`formalization.yaml`](formalization.yaml)**: Placeholder metadata file (`v0.4`) ready to be
-  filled in for Palomar.
-- **`scripts/check-lean-sources.py` & `scripts/verify-comparator.sh`**: Local preflight checks for
-  Palomar's module/line-limit rules, `Challenge.lean` import boundaries, metadata placeholders,
-  and `lake comparator` dual-kernel verification (`nanoda_bin` and `con-ron`).
+1. **$n = 104040$ (`a_104040_eq_zero`):** Setting $K = 10^{3r}$,
+   $$999999 \cdot P_{104040}(r) = 1040400 (K^2 - 1) + 999999 = (1020 K - 201)(1020 K + 201).$$
+   For every $r \ge 1$, $K \ge 1000$, so $1020 K - 201 > 999999$. If $P_{104040}(r)$ were
+   prime, it would divide one of the two factors, forcing $P_{104040}(r) \le 1020 K + 201$
+   and hence $999999 \cdot P_{104040}(r) \le 999999 (1020 K + 201) < (1020 K - 201)(1020 K + 201)$,
+   a contradiction.
+2. **$n = 750760$ (`a_750760_eq_zero`):** Setting $K = 10^{3r}$,
+   $$999999 \cdot P_{750760}(r) = (2740 K - 2551)(2740 K + 2551).$$
+   Using $10^6 \equiv 1 \pmod m$ for the divisors of $999999 = 189 \cdot 5291 = 3861 \cdot 259$,
+   we obtain explicit nontrivial factorizations of $P_{750760}(r)$ for both even and odd $r \ge 1$.
 
-## Quick start
+## Scope and Verification
 
-1. **Fetch Mathlib cache and verify the base build:**
-   ```bash
-   lake exe cache get
-   lake --wfail build
-   lake --wfail test
-   ```
-2. **Add the solved problem statement in `Challenge.lean`:**
-   - Import **only** `Mathlib` (never `FormalConjecturesUtil` or `FormalConjecturesForMathlib`;
-     Palomar requires `Challenge.lean`'s transitive import closure to stay within Lean core and
-     Mathlib).
-   - Strip `@[category ...]`, `@[AMS ...]`, and `@[question ...]` attributes; inline any minimal
-     non-Mathlib definitions needed by the statement with clear docstrings; leave proofs as
-     `:= by sorry`.
-3. **Add the proof in `Solution.lean` (and optional `Solution/*.lean` submodules):**
-   - You may freely import `FormalConjecturesForMathlib` and `FormalConjecturesUtil` here.
-   - Prove the exact same fully-qualified declaration names and types declared in `Challenge.lean`
-     using only standard axioms (`propext`, `Classical.choice`, `Quot.sound`).
-4. **Configure Comparator and Lake:**
-   - Uncomment the `Challenge` and `Solution` targets in [`lakefile.toml`](lakefile.toml) and add
-     them to `defaultTargets`.
-   - Create `comparator.json` naming `Challenge`, `Solution`, and your `theorem_names`.
-5. **Complete metadata and narrative:**
-   - Replace every `TEMPLATE:` entry in [`formalization.yaml`](formalization.yaml).
-   - Rewrite this `README.md` to give a clear mathematical overview of your theorem, sources, and
-     proof for human readers and Palomar's editorial review.
-6. **Verify and submit:**
-   ```bash
-   python3 scripts/check-lean-sources.py --submission
-   lake --wfail build
-   ./scripts/verify-comparator.sh
-   ```
-   Push to a public GitHub repository and submit the full 40-character commit SHA (`git rev-parse HEAD`)
-   at <https://submit.palomar-registry.org/>.
-
-## Detailed documentation
-
-- **For humans:** See [`PALOMAR.md`](PALOMAR.md) for full details on dependency boundaries, value
-  questions (`answer(...)`), `formalization.yaml` provenance rules, and submission steps.
-- **For AI agents:** See [`AGENTS.md`](AGENTS.md) for end-to-end operational instructions,
-  statement-fidelity checks, and Palomar agent-protocol safety rules.
-
-## Citing Formal Conjectures
-
-If your formalization builds on a statement from Formal Conjectures, please keep the
-`related_formalizations` entry in `formalization.yaml` and consider citing:
-
-```bibtex
-@article{FormalConjecturesPaper,
-  authors = {Firsching, Moritz and Lezeau, Paul and Mercuri, Salvatore
-    and Horv{\'a}th, Mikl{\'o}s Z and Dillies, Ya{\"e}l and S{\"o}nne, Calle and Wieser, Eric and
-    Zhang, Fred and Hubert, Thomas and Ag{\"u}era y Arcas, Blaise and Kohli, Pushmeet},
-  title = {{F}ormal {C}onjectures: {A}n {O}pen and {E}volving {B}enchmark for {V}erified {D}iscovery in {M}athematics},
-  year = {2026},
-  url = {https://arxiv.org/abs/2605.13171v1},
-}
-```
-
-## Licensing
-
-Copyright 2025–2026 The Formal Conjectures Authors. Licensed under the Apache License, Version 2.0
-(see [`LICENSE`](LICENSE)). Keep `project.license: "Apache-2.0"` in `formalization.yaml` aligned
-with the root `LICENSE` file.
+- Zero `sorry`, zero `native_decide`, standard axioms only (`propext`, `Classical.choice`,
+  `Quot.sound`).
+- Licensed under Apache-2.0.

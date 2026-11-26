@@ -1,130 +1,101 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
-# formalization.yaml v0.4 — Metadata template for a Palomar submission built from Formal Conjectures.
-#
-# Replace every `TEMPLATE:` placeholder before submitting to Palomar.
-# Replace a placeholder list with `[]` only where its adjacent comment permits it;
-# fields marked required by Palomar policy must remain nonempty.
-# See https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md
-# and https://github.com/mathlib-initiative/formalization.yaml for the full specification.
-
 version: "v0.4"
 
 project:
-  name: "TEMPLATE: concise public title of the formalized result"
+  name: "Disproof of Firoozbakht's conjecture on OEIS A086766"
   description: >-
-    TEMPLATE: concise public abstract of the mathematical content and principal
-    results of this formalization (at most 10,000 characters).
-  # Required nonempty list of HUMAN author names (strings).
-  # Do NOT list AI models, agents, or tools here; credit those under `automation.methods`.
+    A Lean 4 / Mathlib disproof of Farideh Firoozbakht's 2015 conjecture on OEIS A086766
+    (`OeisA86766.conjecture2` in google-deepmind/formal-conjectures), which asserted that
+    for every positive integer n not of the form 10^m there exists r >= 1 such that the
+    r-fold decimal concatenation of n followed by the digit 1 is prime. We exhibit two
+    explicit 6-digit counterexamples, n = 104040 and n = 750760, proving via algebraic
+    difference-of-squares factorizations that every candidate is composite for all r >= 1.
   authors:
-    - "TEMPLATE: human formalizer name"
-  # Must match the root Apache-2.0 `LICENSE` file exactly.
+    - "Maxence Faldor"
   license: "Apache-2.0"
-  # Required nonempty list of HUMAN maintainer names (strings).
   responsible_maintainers:
-    - "TEMPLATE: human maintainer responsible for this formalization"
-
-# Omit `repository` when this repository contains the substantive proof development
-# (the standard case when working directly on a branch/fork of `palomar_prepare`).
-# Uncomment ONLY if this repository is a thin Comparator wrapper around another repo:
-# repository:
-#   substantive_formalization:
-#     id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
-#     revision: "TEMPLATE: full 40-character lowercase commit SHA"
+    - "Maxence Faldor"
 
 classification:
-  # Required: 1 to 8 official arXiv subject identifiers (e.g. "math.NT", "math.CO").
   arxiv:
-    - "TEMPLATE: official arXiv category such as math.NT"
-  # Optional (recommended): up to 8 MSC2020 codes (e.g. "11B25", "05C35").
-  # Tip: map the `@[AMS ...]` tags from the original Formal Conjectures file to 2- or 5-char MSC2020 codes.
+    - "math.NT"
   msc2020:
-    - "TEMPLATE: MSC2020 code such as 11B25"
+    - "11A41"
+    - "11B83"
 
 sources:
-  # Required nonempty list. Every entry needs `title` and `relationship`
-  # (`formalizes`, `adapts`, `independently-proves`, `background`, or `other`).
-  # If `type` is included, Palomar requires one of:
-  #   `paper`, `book`, `web discussion`, `folklore`, `original-proof`, or `other`.
-  #
-  # Choose ONE result origin:
-  # 1. Original proof first presented by this formalization:
-  #    Include an entry with `type: original-proof` and `relationship: other`, and use
-  #    `background` or `other` for all additional context/problem-statement sources
-  #    (such as Erdős Problems, an open-problem paper, OEIS, or MathOverflow).
-  # 2. Source-based formalization (formalizing or adapting an existing paper/preprint, or
-  #    giving a new proof of an already published theorem):
-  #    Omit `type: original-proof`, and give at least one mathematical source a
-  #    `formalizes`, `adapts`, or `independently-proves` relationship.
-  #
-  # Use `authors` strictly for bibliographic authors; use `contributors` (with `name` and
-  # `role`, e.g. `problem-proposer` or `editor`) for other roles.
-  - title: "TEMPLATE: title of the mathematical source (or description of original proof)"
+  - title: "Algebraic difference-of-squares counterexamples n = 104040 and n = 750760 to Firoozbakht's conjecture on OEIS A086766"
+    type: "original-proof"
+    relationship: "other"
+    note: >-
+      First presentation of the counterexamples n = 104040 and n = 750760 and their algebraic
+      primality obstructions for all r >= 1. No prior external proof or counterexample was found
+      on OEIS A086766 or in literature searches as of November 2026.
+  - title: "OEIS A086766: Smallest r such that (concatenation of n, r times) * 10 + 1 is prime"
     authors:
-      - "TEMPLATE: bibliographic author name (or remove `authors` if inapplicable)"
-    # contributors:
-    #   - name: "TEMPLATE: contributor name"
-    #     role: "TEMPLATE: role, e.g. problem-proposer or editor"
-    id: "TEMPLATE: arXiv ID, DOI, URL, or citation (remove if original-proof)"
-    type: "TEMPLATE: paper | book | web discussion | folklore | original-proof | other"
-    location: "TEMPLATE: theorem/problem number, section, or URL"
-    relationship: "TEMPLATE: formalizes | adapts | independently-proves | background | other"
-    note: "TEMPLATE: optional detail explaining relationship or nuances (or remove)"
-    author_endorsement: "TEMPLATE: participated | endorsed | no-response | not-contacted | declined | n/a | other"
+      - "Amarnath Murthy"
+    contributors:
+      - name: "Farideh Firoozbakht"
+        role: "problem-proposer"
+    id: "https://oeis.org/A086766"
+    type: "web discussion"
+    location: "Comment by Farideh Firoozbakht, Jan 07 2015"
+    relationship: "background"
+    author_endorsement: "not-contacted"
 
 related_formalizations:
-  # Link back to the Formal Conjectures repository and commit where the problem statement originated.
-  - id: "https://github.com/google-deepmind/formal-conjectures"
+  - id: "https://github.com/google-deepmind/formal-conjectures/blob/5bd8bfb9def462c19a87d2d275af3db3341dc727/FormalConjectures/OEIS/86766.lean"
     relationship: "builds-on"
-    note: "TEMPLATE: Proves `<declaration>` from `FormalConjectures/<Source>/<File>.lean` (commit `<sha>`)."
+    note: >-
+      Refutes `OeisA86766.conjecture2` verbatim from `FormalConjectures/OEIS/86766.lean`
+      at commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`.
 
 status:
   scope: >-
-    TEMPLATE: state clearly what is proved in `Solution.lean` vs `Challenge.lean`,
-    including any adaptations, domain restrictions, or omitted variants.
-  # Count unresolved sorries in the proof development ONLY (excluding deliberate `sorry` in `Challenge.lean`).
-  # Must be 0 for a complete Palomar proof submission.
+    Proves `a 104040 = 0`, `a 750760 = 0`, and the negation of `OeisA86766.conjecture2`.
+    Does not address `conjecture1` or `conjecture3` in `86766.lean`.
   sorry_count: 0
   sorry_in_definitions: 0
-  # List all axioms used by the proved declarations (check with `#print axioms <decl>`).
-  # Palomar permits only `propext`, `Classical.choice`, and `Quot.sound`.
   axioms:
-    - "TEMPLATE: list axioms from `#print axioms`, e.g. propext, Classical.choice, Quot.sound, or []"
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
 
 automation:
-  # Required nonempty list. Record every material human/AI phase honestly.
   methods:
-    - method: "TEMPLATE: manual | copilot | agent | autonomous | other"
+    - method: "agent"
       models:
-        - "TEMPLATE: model identifier(s) used, or replace this list with [] for manual work"
-      framework: "TEMPLATE: agent/prover harness or tool name, or remove if manual"
-      tool_setup: "TEMPLATE: details on prover, tactics, editors, or orchestration used"
-      cost:
-        wall_time: "TEMPLATE: approximate elapsed time (optional)"
-        spend_usd: "TEMPLATE: approximate compute/API spend or not tracked (optional)"
-        hardware: "TEMPLATE: hardware used (optional)"
-      prompting_notes: "TEMPLATE: brief notes on task specification or prompting (optional)"
-  notes: "TEMPLATE: concise summary of how human authors and automated tools collaborated"
+        - "Gemini"
 
 fidelity:
   divergences: >-
-    TEMPLATE: document any differences between `Challenge.lean`, the original Formal Conjectures
-    statement, and the informal source (or state "None known").
+    None relative to `FormalConjectures/OEIS/86766.lean` at commit 5bd8bfb9def462c19a87d2d275af3db3341dc727. The sequence
+    definition `a` is copied verbatim and `conjecture2` is its exact logical negation.
 
 review:
-  # Review completed BEFORE submitting to Palomar (`unchecked`, `self-assessed`, `agent-reviewed`,
-  # `peer-reviewed`, `author-verified`, etc.).
-  status: "TEMPLATE: pre-submission review status, e.g. self-assessed"
+  status: "self-assessed"
   reviewers: []
-  notes: "TEMPLATE: describe statement and boundary-case audits performed before submission"
+  notes: >-
+    Both algebraic identities and digit lengths checked directly in Lean and audited by hand
+    against OEIS A086766; axioms verified.
 
 alignment:
-  namespace: "TEMPLATE: root namespace of the problem/proof, e.g. Erdos123"
+  namespace: "OeisA86766"
   statements:
-    - source: "TEMPLATE: informal problem/theorem identifier in the cited source"
-      lean: "TEMPLATE: fully qualified Lean declaration name in Challenge.lean and Solution.lean"
+    - source: "OEIS A086766, Firoozbakht's conjecture (negation)"
+      lean: "OeisA86766.conjecture2"
       module: "Challenge"
       status: "proved"
-      note: "TEMPLATE: correspondence notes and boundary-case verification"
+      note: "Exact negation of `OeisA86766.conjecture2` in `FormalConjectures/OEIS/86766.lean`."
+    - source: "Counterexample n = 104040"
+      lean: "OeisA86766.a_104040_eq_zero"
+      module: "Challenge"
+      status: "proved"
+      note: "Proves `a 104040 = 0` via `999999 * p = (1020 * 10^(3r) - 201)(1020 * 10^(3r) + 201)`."
+    - source: "Counterexample n = 750760"
+      lean: "OeisA86766.a_750760_eq_zero"
+      module: "Challenge"
+      status: "proved"
+      note: "Proves `a 750760 = 0` via `999999 * P = (2740 * 10^(3r) - 2551)(2740 * 10^(3r) + 2551)`."
 
-acknowledgements: "TEMPLATE: optional credits for libraries (Mathlib, Formal Conjectures), tools, and discussions"
+acknowledgements: "Built on Mathlib and google-deepmind/formal-conjectures."

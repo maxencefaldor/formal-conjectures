@@ -11,7 +11,7 @@
 
 name = "formal_conjectures"
 keywords = ["math"]
-defaultTargets = ["FormalConjecturesUtil", "FormalConjecturesForMathlib"]
+defaultTargets = ["FormalConjecturesUtil", "FormalConjecturesForMathlib", "Challenge", "Solution"]
 testDriver = "FormalConjecturesTest"
 
 [leanOptions]
@@ -54,15 +54,12 @@ weak.linter.style.copyright.formalConjectures = true
 weak.linter.style.namespace = true
 weak.linter.style.stubs = true
 
-# When preparing a Palomar submission, add `"Challenge"` and `"Solution"` to
-# `defaultTargets` above and uncomment the libraries below:
-#
-# [[lean_lib]]
-# name = "Challenge"
-# roots = ["Challenge"]
-# [lean_lib.leanOptions]
-# warn.sorry = false
-#
-# [[lean_lib]]
-# name = "Solution"
-# globs = ["Solution.*"]
+[[lean_lib]]
+name = "Challenge"
+roots = ["Challenge"]
+[lean_lib.leanOptions]
+warn.sorry = false
+
+[[lean_lib]]
+name = "Solution"
+roots = ["Solution"]
