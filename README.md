@@ -1,88 +1,33 @@
-# Formal Conjectures — Palomar Submission Base (`palomar_prepare`)
+# Ben Green's Open Problem 40: $f(2) = 1$
 
-[![CI](https://github.com/google-deepmind/formal-conjectures/actions/workflows/ci.yml/badge.svg)](https://github.com/google-deepmind/formal-conjectures/actions/workflows/ci.yml)
+This repository packages a Lean 4 / Mathlib formalization of the radius-2 case of **Ben Green's
+Open Problem 40** (`Green40.green_40.f_two_eq_one : f 2 = 1`) for the
+[Palomar Registry](https://palomar-registry.org/), matching
+[`google-deepmind/formal-conjectures`](https://github.com/google-deepmind/formal-conjectures)
+(`FormalConjectures/GreensOpenProblems/40.lean`, commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`).
 
-This branch (`palomar_prepare`) is a minimal, pre-bumped template derived from
-[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) for packaging a newly
-found formal proof into a [Palomar Registry](https://palomar-registry.org/) submission.
+## Theorem
 
-All open-problem directories (`FormalConjectures/`), website assets, and problem-tracking scripts
-have been stripped so that you only need to port the single solved problem and its proof.
+Let $f(r) = \liminf_{n \to \infty} \min_{V \le \mathbb{F}_2^n:\, V + H(r) = \mathbb{F}_2^n} \frac{|V|\,|H(r)|}{2^n}$
+be the asymptotic linear covering density of radius-$r$ Hamming balls in $\mathbb{F}_2^n$.
+Then $f(2) = 1$.
 
-## What is included
+## Mathematical Source and Proof Architecture
 
-- **`FormalConjecturesForMathlib/`**: Reusable mathematical definitions and proved lemmas from
-  Formal Conjectures, already bumped to the current Lean / Mathlib release (`v4.36.0`). Contains
-  no `sorry`.
-- **`FormalConjecturesUtil/`**: Shared attributes, metadata helpers, and style linters.
-- **`FormalConjecturesTest/`**: Tests for `FormalConjecturesUtil`.
-- **[`formalization.yaml`](formalization.yaml)**: Placeholder metadata file (`v0.4`) ready to be
-  filled in for Palomar.
-- **`scripts/check-lean-sources.py` & `scripts/verify-comparator.sh`**: Local preflight checks for
-  Palomar's module/line-limit rules, `Challenge.lean` import boundaries, metadata placeholders,
-  and `lake comparator` dual-kernel verification (`nanoda_bin` and `con-ron`).
+This formalization implements the proof of **Jensen Kohlmeyer and Liam Kruer**,
+*Asymptotically optimal binary linear covering codes of radius two* (September 15, 2026 draft,
+[PDF](https://liamkruer.com/assets/work/conjectures/problems/green-40/paper/proof.pdf)):
 
-## Quick start
+1. **Lower bound (`one_le_f_two`):** Every covering subspace $V$ satisfies
+   $|V|\,|H(2)| \ge 2^n$, so `minDensity n 2 >= 1` for all $n$ and hence `1 <= f 2`.
+2. **Upper bound (`f_two_le_one`):** Constructs admissible binary quadratic maps
+   `AdmissibleQuad n (2 * t)` for arbitrarily large powers of two $2^r = 2t$
+   (`exists_admissibleQuad_pow_two`), producing covering subspaces of arbitrarily large ambient
+   length $N$ with covering density at most $1 + 12 / 2^t$
+   (`exists_minDensity_le_of_admissibleQuad`). Taking $t \to \infty$ gives `f 2 <= 1`.
 
-1. **Fetch Mathlib cache and verify the base build:**
-   ```bash
-   lake exe cache get
-   lake --wfail build
-   lake --wfail test
-   ```
-2. **Add the solved problem statement in `Challenge.lean`:**
-   - Import **only** `Mathlib` (never `FormalConjecturesUtil` or `FormalConjecturesForMathlib`;
-     Palomar requires `Challenge.lean`'s transitive import closure to stay within Lean core and
-     Mathlib).
-   - Strip `@[category ...]`, `@[AMS ...]`, and `@[question ...]` attributes; inline any minimal
-     non-Mathlib definitions needed by the statement with clear docstrings; leave proofs as
-     `:= by sorry`.
-3. **Add the proof in `Solution.lean` (and optional `Solution/*.lean` submodules):**
-   - You may freely import `FormalConjecturesForMathlib` and `FormalConjecturesUtil` here.
-   - Prove the exact same fully-qualified declaration names and types declared in `Challenge.lean`
-     using only standard axioms (`propext`, `Classical.choice`, `Quot.sound`).
-4. **Configure Comparator and Lake:**
-   - Uncomment the `Challenge` and `Solution` targets in [`lakefile.toml`](lakefile.toml) and add
-     them to `defaultTargets`.
-   - Create `comparator.json` naming `Challenge`, `Solution`, and your `theorem_names`.
-5. **Complete metadata and narrative:**
-   - Replace every `TEMPLATE:` entry in [`formalization.yaml`](formalization.yaml).
-   - Rewrite this `README.md` to give a clear mathematical overview of your theorem, sources, and
-     proof for human readers and Palomar's editorial review.
-6. **Verify and submit:**
-   ```bash
-   python3 scripts/check-lean-sources.py --submission
-   lake --wfail build
-   ./scripts/verify-comparator.sh
-   ```
-   Push to a public GitHub repository and submit the full 40-character commit SHA (`git rev-parse HEAD`)
-   at <https://submit.palomar-registry.org/>.
+## Scope and Verification
 
-## Detailed documentation
-
-- **For humans:** See [`PALOMAR.md`](PALOMAR.md) for full details on dependency boundaries, value
-  questions (`answer(...)`), `formalization.yaml` provenance rules, and submission steps.
-- **For AI agents:** See [`AGENTS.md`](AGENTS.md) for end-to-end operational instructions,
-  statement-fidelity checks, and Palomar agent-protocol safety rules.
-
-## Citing Formal Conjectures
-
-If your formalization builds on a statement from Formal Conjectures, please keep the
-`related_formalizations` entry in `formalization.yaml` and consider citing:
-
-```bibtex
-@article{FormalConjecturesPaper,
-  authors = {Firsching, Moritz and Lezeau, Paul and Mercuri, Salvatore
-    and Horv{\'a}th, Mikl{\'o}s Z and Dillies, Ya{\"e}l and S{\"o}nne, Calle and Wieser, Eric and
-    Zhang, Fred and Hubert, Thomas and Ag{\"u}era y Arcas, Blaise and Kohli, Pushmeet},
-  title = {{F}ormal {C}onjectures: {A}n {O}pen and {E}volving {B}enchmark for {V}erified {D}iscovery in {M}athematics},
-  year = {2026},
-  url = {https://arxiv.org/abs/2605.13171v1},
-}
-```
-
-## Licensing
-
-Copyright 2025–2026 The Formal Conjectures Authors. Licensed under the Apache License, Version 2.0
-(see [`LICENSE`](LICENSE)). Keep `project.license: "Apache-2.0"` in `formalization.yaml` aligned
-with the root `LICENSE` file.
+- Zero `sorry`, zero `native_decide`, standard axioms only (`propext`, `Classical.choice`,
+  `Quot.sound`).
+- Licensed under Apache-2.0.
