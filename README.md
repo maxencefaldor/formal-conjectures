@@ -8,10 +8,14 @@ This repository packages an independent Lean 4 / Mathlib formalization of **Sand
 
 ## Theorem
 
-For every $k > 0$, there exists $c \in \mathbb{N}$ (explicitly $c = \lceil 1 + 256 e k^2 \rceil$)
-such that for all sufficiently large $n$ and every $A \subseteq \mathbb{F}_2^n$ of density
-$\alpha > 1/2 - k / \sqrt{n}$, the sumset $A + A$ contains a linear subspace (hence a coset)
-of dimension at least $n - c$.
+The compared theorem `Green51.green_51.one_half` states that for every $k > 0$, there exists a
+constant $c \in \mathbb{N}$ such that for all sufficiently large $n$ and every
+$A \subseteq \mathbb{F}_2^n$ of density $\alpha > 1/2 - k / \sqrt{n}$, the sumset $A + A$
+contains an affine coset of dimension at least $n - c$ (codimension at most $c$).
+
+Internally, `Solution.lean` establishes this by proving a stronger proof-level intermediate result
+(not part of the compared theorem's type): $A + A$ contains a linear subspace of codimension at
+most $\lceil 1 + 256 e k^2 \rceil$.
 
 ## Mathematical Source and Proof Architecture
 

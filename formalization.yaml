@@ -4,12 +4,14 @@ version: "v0.4"
 project:
   name: "Ben Green's Open Problem 51 at density one half (Sanders' Question 5.1)"
   description: >-
-    An independent Lean 4 / Mathlib formalization of the theorem of Jensen Kohlmeyer and
-    Liam Kruer (2026) resolving Sanders' Question 5.1 (Green's Open Problem 51 at density 1/2):
-    for any k > 0, there exists c = ceil(1 + 256 * e * k^2) such that for all sufficiently
-    large n and every A subset F_2^n of density alpha > 1/2 - k / sqrt(n), the sumset A + A
-    contains a subspace of codimension at most c. The compared declaration matches
-    `Green51.green_51.one_half` verbatim from google-deepmind/formal-conjectures.
+    An independent Lean 4 / Mathlib formalization resolving Sanders' Question 5.1 (Ben Green's
+    Open Problem 51 at density 1/2), following the proof of Jensen Kohlmeyer and Liam Kruer
+    (2026). The compared declaration matches `Green51.green_51.one_half` verbatim from
+    google-deepmind/formal-conjectures: for every k > 0, there exists a constant c : Nat such
+    that for all sufficiently large n and every A subset F_2^n of density alpha > 1/2 - k / sqrt(n),
+    the sumset A + A contains an affine coset of dimension at least n - c (codimension at most c).
+    As a proof-level intermediate step inside `Solution.lean` (not stated in the compared theorem's
+    type), the proof constructs a linear subspace of codimension at most ceil(1 + 256 * e * k^2).
   authors:
     - "Maxence Faldor"
   license: "Apache-2.0"
@@ -70,9 +72,13 @@ related_formalizations:
 
 status:
   scope: >-
-    Proves `Green51.green_51.one_half` via the explicit subspace codimension bound
-    `codim H <= 1 + 256 * e * n * eps^2` for `0 <= eps <= 1/4`. Does not formalize the
-    general-density or arithmetic-progression variants in `51.lean`.
+    Proves the compared existential affine-coset theorem `Green51.green_51.one_half` (existence
+    of some constant `c : Nat` with `n <= guaranteedMaxCosetDim n alpha + c`). Internally,
+    `Solution.lean` establishes this by proving a stronger linear-subspace codimension bound
+    `codim H <= 1 + 256 * e * n * eps^2` for `0 <= eps <= 1/4`; that linear-subspace property
+    and explicit constant are proof-level intermediate results rather than part of the compared
+    theorem's type. Does not formalize the general-density or arithmetic-progression variants in
+    `51.lean`.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
@@ -106,6 +112,9 @@ alignment:
       lean: "Green51.green_51.one_half"
       module: "Challenge"
       status: "proved"
-      note: "Exact match with `FormalConjectures/GreensOpenProblems/51.lean`."
+      note: >-
+        Exact match with `FormalConjectures/GreensOpenProblems/51.lean`: asserts existence of
+        some constant `c : Nat` such that `A + A` contains an affine coset of codimension at
+        most `c` (proved internally via a linear subspace with an explicit codimension bound).
 
 acknowledgements: "Built on Mathlib and google-deepmind/formal-conjectures."

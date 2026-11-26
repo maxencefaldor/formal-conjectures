@@ -58,8 +58,9 @@ noncomputable def guaranteedMaxCosetDim (n : ℕ) (α : ℝ) : ℕ :=
   sInf { maxCosetDim (ZMod 2) (𝔽₂ n) ↑(A + A) | (A : Finset (𝔽₂ n)) (_h : A.dens ≥ α) }
 
 /--
-If $A \subset \mathbb{F}_2^n$ has density $\alpha > 1/2 - k/\sqrt{n}$, then $A + A$ contains a
-coset (in fact a linear subspace) of co-dimension $O_k(1)$, answering [Sa11, Question 5.1].
+If $A \subset \mathbb{F}_2^n$ has density $\alpha > 1/2 - k/\sqrt{n}$, then $A + A$ contains an
+affine coset of co-dimension at most some constant $c$ depending only on $k$, answering
+[Sa11, Question 5.1].
 -/
 theorem green_51.one_half :
     ∀ (k : ℝ), 0 < k →
