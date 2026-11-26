@@ -1,88 +1,40 @@
-# Formal Conjectures — Palomar Submission Base (`palomar_prepare`)
+# Disproof of the Pierce-Birkhoff Conjecture
 
-[![CI](https://github.com/google-deepmind/formal-conjectures/actions/workflows/ci.yml/badge.svg)](https://github.com/google-deepmind/formal-conjectures/actions/workflows/ci.yml)
+This repository packages a Lean 4 / Mathlib disproof of the **Pierce-Birkhoff conjecture**
+for the [Palomar Registry](https://palomar-registry.org/), directly refuting the exact
+declaration `PierceBirkhoff.pierce_birkhoff_conjecture` in
+[`google-deepmind/formal-conjectures`](https://github.com/google-deepmind/formal-conjectures)
+(`FormalConjectures/Wikipedia/PierceBirkhoff.lean`, commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`).
 
-This branch (`palomar_prepare`) is a minimal, pre-bumped template derived from
-[Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) for packaging a newly
-found formal proof into a [Palomar Registry](https://palomar-registry.org/) submission.
+## Mathematical Source and Closing Issue #5602
 
-All open-problem directories (`FormalConjectures/`), website assets, and problem-tracking scripts
-have been stripped so that you only need to port the single solved problem and its proof.
+Following **Zehua Lai, Lek-Heng Lim, and Junyu Ren**, *Pierce-Birkhoff conjecture is false*,
+[arXiv:2609.10420](https://arxiv.org/abs/2609.10420) (September 2026), we construct a
+30-dimensional piecewise-quadratic function on $\mathbb{R}^{30} \simeq S^2(\mathbb{R}^5) \times S^2(\mathbb{R}^5)$:
+for symmetric $5 \times 5$ real matrices $(X, Y)$ with $P = X Y$, set
+$q_{ij,\pm}(X, Y) = P_{ii} \pm 4 P_{ij}$ ($i \ne j$), $h(X, Y) = \min q_{ij,\pm}(X, Y)$,
+and $f(X, Y) = h(X, Y)$ if $h(X, Y) > 0$ and $\det X > 0$, else $0$.
 
-## What is included
+As documented in `google-deepmind/formal-conjectures` Issue #5602, two gaps remained between
+existing claims and `FormalConjectures/Wikipedia/PierceBirkhoff.lean`:
+1. The paper's 30-dimensional theorem was stated over a semi-algebraic partition rather than
+   a finite **closed** semi-algebraic covering (`IsPiecewiseMvPolynomial`).
+2. The authors' separate $n=8$ Lean development proved `¬ IsPolynomialLattice f` rather than
+   refuting the explicit max-of-min normal form `⨆ i, ⨅ j, MvPolynomial.eval x (g i j)`.
 
-- **`FormalConjecturesForMathlib/`**: Reusable mathematical definitions and proved lemmas from
-  Formal Conjectures, already bumped to the current Lean / Mathlib release (`v4.36.0`). Contains
-  no `sorry`.
-- **`FormalConjecturesUtil/`**: Shared attributes, metadata helpers, and style linters.
-- **`FormalConjecturesTest/`**: Tests for `FormalConjecturesUtil`.
-- **[`formalization.yaml`](formalization.yaml)**: Placeholder metadata file (`v0.4`) ready to be
-  filled in for Palomar.
-- **`scripts/check-lean-sources.py` & `scripts/verify-comparator.sh`**: Local preflight checks for
-  Palomar's module/line-limit rules, `Challenge.lean` import boundaries, metadata placeholders,
-  and `lake comparator` dual-kernel verification (`nanoda_bin` and `con-ron`).
+Our Lean 4 proof closes both gaps directly:
+- **Parts 1-3 (`isPiecewiseMvPolynomial_fFn`):** Constructs explicit closed semi-algebraic
+  pieces covering $\mathbb{R}^{30}$ on each of which `fFn` agrees with either `0` or one of
+  the quadratic polynomials $q_{ij,\pm}$.
+- **Parts 4-5:** Establishes homogeneous-component degree-0, degree-1, and degree-2 identities
+  for polynomials bounding `fFn` along positive rays.
+- **Parts 6-7 (`fFn_pertPt_pos`, `fFn_pertPt_neg`, generic orbit point):** Analyzes two-sided
+  perturbations along the determinant-zero boundary orbit $O$ and uses column-permutation
+  invariance to refute every finite max-of-min representation (including empty index types via
+  `fFn_toVec_one_one : fFn (toVec 1 1) = 1`).
 
-## Quick start
+## Scope and Verification
 
-1. **Fetch Mathlib cache and verify the base build:**
-   ```bash
-   lake exe cache get
-   lake --wfail build
-   lake --wfail test
-   ```
-2. **Add the solved problem statement in `Challenge.lean`:**
-   - Import **only** `Mathlib` (never `FormalConjecturesUtil` or `FormalConjecturesForMathlib`;
-     Palomar requires `Challenge.lean`'s transitive import closure to stay within Lean core and
-     Mathlib).
-   - Strip `@[category ...]`, `@[AMS ...]`, and `@[question ...]` attributes; inline any minimal
-     non-Mathlib definitions needed by the statement with clear docstrings; leave proofs as
-     `:= by sorry`.
-3. **Add the proof in `Solution.lean` (and optional `Solution/*.lean` submodules):**
-   - You may freely import `FormalConjecturesForMathlib` and `FormalConjecturesUtil` here.
-   - Prove the exact same fully-qualified declaration names and types declared in `Challenge.lean`
-     using only standard axioms (`propext`, `Classical.choice`, `Quot.sound`).
-4. **Configure Comparator and Lake:**
-   - Uncomment the `Challenge` and `Solution` targets in [`lakefile.toml`](lakefile.toml) and add
-     them to `defaultTargets`.
-   - Create `comparator.json` naming `Challenge`, `Solution`, and your `theorem_names`.
-5. **Complete metadata and narrative:**
-   - Replace every `TEMPLATE:` entry in [`formalization.yaml`](formalization.yaml).
-   - Rewrite this `README.md` to give a clear mathematical overview of your theorem, sources, and
-     proof for human readers and Palomar's editorial review.
-6. **Verify and submit:**
-   ```bash
-   python3 scripts/check-lean-sources.py --submission
-   lake --wfail build
-   ./scripts/verify-comparator.sh
-   ```
-   Push to a public GitHub repository and submit the full 40-character commit SHA (`git rev-parse HEAD`)
-   at <https://submit.palomar-registry.org/>.
-
-## Detailed documentation
-
-- **For humans:** See [`PALOMAR.md`](PALOMAR.md) for full details on dependency boundaries, value
-  questions (`answer(...)`), `formalization.yaml` provenance rules, and submission steps.
-- **For AI agents:** See [`AGENTS.md`](AGENTS.md) for end-to-end operational instructions,
-  statement-fidelity checks, and Palomar agent-protocol safety rules.
-
-## Citing Formal Conjectures
-
-If your formalization builds on a statement from Formal Conjectures, please keep the
-`related_formalizations` entry in `formalization.yaml` and consider citing:
-
-```bibtex
-@article{FormalConjecturesPaper,
-  authors = {Firsching, Moritz and Lezeau, Paul and Mercuri, Salvatore
-    and Horv{\'a}th, Mikl{\'o}s Z and Dillies, Ya{\"e}l and S{\"o}nne, Calle and Wieser, Eric and
-    Zhang, Fred and Hubert, Thomas and Ag{\"u}era y Arcas, Blaise and Kohli, Pushmeet},
-  title = {{F}ormal {C}onjectures: {A}n {O}pen and {E}volving {B}enchmark for {V}erified {D}iscovery in {M}athematics},
-  year = {2026},
-  url = {https://arxiv.org/abs/2605.13171v1},
-}
-```
-
-## Licensing
-
-Copyright 2025–2026 The Formal Conjectures Authors. Licensed under the Apache License, Version 2.0
-(see [`LICENSE`](LICENSE)). Keep `project.license: "Apache-2.0"` in `formalization.yaml` aligned
-with the root `LICENSE` file.
+- Zero `sorry`, zero `native_decide`, standard axioms only (`propext`, `Classical.choice`,
+  `Quot.sound`).
+- Licensed under Apache-2.0.
