@@ -1,130 +1,111 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
-# formalization.yaml v0.4 — Metadata template for a Palomar submission built from Formal Conjectures.
-#
-# Replace every `TEMPLATE:` placeholder before submitting to Palomar.
-# Replace a placeholder list with `[]` only where its adjacent comment permits it;
-# fields marked required by Palomar policy must remain nonempty.
-# See https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md
-# and https://github.com/mathlib-initiative/formalization.yaml for the full specification.
-
 version: "v0.4"
 
 project:
-  name: "TEMPLATE: concise public title of the formalized result"
+  name: "Ben Green's Open Problem 51 at density one half (Sanders' Question 5.1)"
   description: >-
-    TEMPLATE: concise public abstract of the mathematical content and principal
-    results of this formalization (at most 10,000 characters).
-  # Required nonempty list of HUMAN author names (strings).
-  # Do NOT list AI models, agents, or tools here; credit those under `automation.methods`.
+    An independent Lean 4 / Mathlib formalization of the theorem of Jensen Kohlmeyer and
+    Liam Kruer (2026) resolving Sanders' Question 5.1 (Green's Open Problem 51 at density 1/2):
+    for any k > 0, there exists c = ceil(1 + 256 * e * k^2) such that for all sufficiently
+    large n and every A subset F_2^n of density alpha > 1/2 - k / sqrt(n), the sumset A + A
+    contains a subspace of codimension at most c. The compared declaration matches
+    `Green51.green_51.one_half` verbatim from google-deepmind/formal-conjectures.
   authors:
-    - "TEMPLATE: human formalizer name"
-  # Must match the root Apache-2.0 `LICENSE` file exactly.
+    - "Maxence Faldor"
   license: "Apache-2.0"
-  # Required nonempty list of HUMAN maintainer names (strings).
   responsible_maintainers:
-    - "TEMPLATE: human maintainer responsible for this formalization"
-
-# Omit `repository` when this repository contains the substantive proof development
-# (the standard case when working directly on a branch/fork of `palomar_prepare`).
-# Uncomment ONLY if this repository is a thin Comparator wrapper around another repo:
-# repository:
-#   substantive_formalization:
-#     id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
-#     revision: "TEMPLATE: full 40-character lowercase commit SHA"
+    - "Maxence Faldor"
 
 classification:
-  # Required: 1 to 8 official arXiv subject identifiers (e.g. "math.NT", "math.CO").
   arxiv:
-    - "TEMPLATE: official arXiv category such as math.NT"
-  # Optional (recommended): up to 8 MSC2020 codes (e.g. "11B25", "05C35").
-  # Tip: map the `@[AMS ...]` tags from the original Formal Conjectures file to 2- or 5-char MSC2020 codes.
+    - "math.CO"
+    - "math.NT"
   msc2020:
-    - "TEMPLATE: MSC2020 code such as 11B25"
+    - "11B30"
+    - "11B13"
 
 sources:
-  # Required nonempty list. Every entry needs `title` and `relationship`
-  # (`formalizes`, `adapts`, `independently-proves`, `background`, or `other`).
-  # If `type` is included, Palomar requires one of:
-  #   `paper`, `book`, `web discussion`, `folklore`, `original-proof`, or `other`.
-  #
-  # Choose ONE result origin:
-  # 1. Original proof first presented by this formalization:
-  #    Include an entry with `type: original-proof` and `relationship: other`, and use
-  #    `background` or `other` for all additional context/problem-statement sources
-  #    (such as Erdős Problems, an open-problem paper, OEIS, or MathOverflow).
-  # 2. Source-based formalization (formalizing or adapting an existing paper/preprint, or
-  #    giving a new proof of an already published theorem):
-  #    Omit `type: original-proof`, and give at least one mathematical source a
-  #    `formalizes`, `adapts`, or `independently-proves` relationship.
-  #
-  # Use `authors` strictly for bibliographic authors; use `contributors` (with `name` and
-  # `role`, e.g. `problem-proposer` or `editor`) for other roles.
-  - title: "TEMPLATE: title of the mathematical source (or description of original proof)"
+  - title: "Green's Open Problem 51 at Density One Half: Bounded Codimension in Binary Sumsets"
     authors:
-      - "TEMPLATE: bibliographic author name (or remove `authors` if inapplicable)"
-    # contributors:
-    #   - name: "TEMPLATE: contributor name"
-    #     role: "TEMPLATE: role, e.g. problem-proposer or editor"
-    id: "TEMPLATE: arXiv ID, DOI, URL, or citation (remove if original-proof)"
-    type: "TEMPLATE: paper | book | web discussion | folklore | original-proof | other"
-    location: "TEMPLATE: theorem/problem number, section, or URL"
-    relationship: "TEMPLATE: formalizes | adapts | independently-proves | background | other"
-    note: "TEMPLATE: optional detail explaining relationship or nuances (or remove)"
-    author_endorsement: "TEMPLATE: participated | endorsed | no-response | not-contacted | declined | n/a | other"
+      - "Jensen Kohlmeyer"
+      - "Liam Kruer"
+    id: "https://liamkruer.com/assets/work/conjectures/problems/green-51/paper/proof.pdf"
+    type: "paper"
+    location: "Main Theorem (codim H <= 1 + 256 e n eps^2), September 2026 draft"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
+    note: >-
+      Independent Lean 4 formalization following the five-part architecture of Kohlmeyer and
+      Kruer: ternary separator variance estimate, Walsh-Fourier face variance identity,
+      Bernoulli face averaging, Fourier analysis on F_2^n, and minimal covering obstruction via
+      polynomial interpolation.
+  - title: "Green's sumset problem at density one half"
+    authors:
+      - "Tom Sanders"
+    id: "https://doi.org/10.4064/aa146-1-7"
+    type: "paper"
+    location: "Acta Arithmetica 146.1 (2011), 91-101, Question 5.1"
+    relationship: "background"
+    author_endorsement: "not-contacted"
+  - title: "100 Open Problems"
+    authors:
+      - "Ben Green"
+    id: "https://people.maths.ox.ac.uk/greenbj/papers/open-problems.pdf#problem.51"
+    type: "other"
+    location: "Problem 51"
+    relationship: "background"
+    author_endorsement: "not-contacted"
 
 related_formalizations:
-  # Link back to the Formal Conjectures repository and commit where the problem statement originated.
-  - id: "https://github.com/google-deepmind/formal-conjectures"
+  - id: "https://github.com/google-deepmind/formal-conjectures/blob/5bd8bfb9def462c19a87d2d275af3db3341dc727/FormalConjectures/GreensOpenProblems/51.lean"
     relationship: "builds-on"
-    note: "TEMPLATE: Proves `<declaration>` from `FormalConjectures/<Source>/<File>.lean` (commit `<sha>`)."
+    note: >-
+      Proves `Green51.green_51.one_half` verbatim from
+      `FormalConjectures/GreensOpenProblems/51.lean` at commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`.
+  - id: "https://liamkruer.com/assets/work/green-51-source.zip"
+    relationship: "independent"
+    note: >-
+      The authors' source archive includes an unchecked Lean file (`green51onehalf.lean`);
+      this submission was written independently without reusing that Lean code.
 
 status:
   scope: >-
-    TEMPLATE: state clearly what is proved in `Solution.lean` vs `Challenge.lean`,
-    including any adaptations, domain restrictions, or omitted variants.
-  # Count unresolved sorries in the proof development ONLY (excluding deliberate `sorry` in `Challenge.lean`).
-  # Must be 0 for a complete Palomar proof submission.
+    Proves `Green51.green_51.one_half` via the explicit subspace codimension bound
+    `codim H <= 1 + 256 * e * n * eps^2` for `0 <= eps <= 1/4`. Does not formalize the
+    general-density or arithmetic-progression variants in `51.lean`.
   sorry_count: 0
   sorry_in_definitions: 0
-  # List all axioms used by the proved declarations (check with `#print axioms <decl>`).
-  # Palomar permits only `propext`, `Classical.choice`, and `Quot.sound`.
   axioms:
-    - "TEMPLATE: list axioms from `#print axioms`, e.g. propext, Classical.choice, Quot.sound, or []"
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
 
 automation:
-  # Required nonempty list. Record every material human/AI phase honestly.
   methods:
-    - method: "TEMPLATE: manual | copilot | agent | autonomous | other"
+    - method: "agent"
       models:
-        - "TEMPLATE: model identifier(s) used, or replace this list with [] for manual work"
-      framework: "TEMPLATE: agent/prover harness or tool name, or remove if manual"
-      tool_setup: "TEMPLATE: details on prover, tactics, editors, or orchestration used"
-      cost:
-        wall_time: "TEMPLATE: approximate elapsed time (optional)"
-        spend_usd: "TEMPLATE: approximate compute/API spend or not tracked (optional)"
-        hardware: "TEMPLATE: hardware used (optional)"
-      prompting_notes: "TEMPLATE: brief notes on task specification or prompting (optional)"
-  notes: "TEMPLATE: concise summary of how human authors and automated tools collaborated"
+        - "Gemini"
 
 fidelity:
   divergences: >-
-    TEMPLATE: document any differences between `Challenge.lean`, the original Formal Conjectures
-    statement, and the informal source (or state "None known").
+    None relative to `FormalConjectures/GreensOpenProblems/51.lean` at commit 5bd8bfb9def462c19a87d2d275af3db3341dc727.
+    `𝔽`, `𝔽₂`, and `maxCosetDim` are inlined verbatim from `FormalConjecturesForMathlib`.
 
 review:
-  # Review completed BEFORE submitting to Palomar (`unchecked`, `self-assessed`, `agent-reviewed`,
-  # `peer-reviewed`, `author-verified`, etc.).
-  status: "TEMPLATE: pre-submission review status, e.g. self-assessed"
+  status: "self-assessed"
   reviewers: []
-  notes: "TEMPLATE: describe statement and boundary-case audits performed before submission"
+  notes: >-
+    Definitions and theorem signature checked verbatim against
+    `FormalConjectures/GreensOpenProblems/51.lean` (commit 5bd8bfb9def462c19a87d2d275af3db3341dc727); global `open Classical`
+    replaced by `open scoped Classical`; axioms checked.
 
 alignment:
-  namespace: "TEMPLATE: root namespace of the problem/proof, e.g. Erdos123"
+  namespace: "Green51"
   statements:
-    - source: "TEMPLATE: informal problem/theorem identifier in the cited source"
-      lean: "TEMPLATE: fully qualified Lean declaration name in Challenge.lean and Solution.lean"
+    - source: "Sanders (2011), Question 5.1; Green's Open Problem 51; Kohlmeyer and Kruer (2026)"
+      lean: "Green51.green_51.one_half"
       module: "Challenge"
       status: "proved"
-      note: "TEMPLATE: correspondence notes and boundary-case verification"
+      note: "Exact match with `FormalConjectures/GreensOpenProblems/51.lean`."
 
-acknowledgements: "TEMPLATE: optional credits for libraries (Mathlib, Formal Conjectures), tools, and discussions"
+acknowledgements: "Built on Mathlib and google-deepmind/formal-conjectures."
