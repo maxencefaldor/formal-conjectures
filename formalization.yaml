@@ -1,130 +1,116 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
-# formalization.yaml v0.4 — Metadata template for a Palomar submission built from Formal Conjectures.
-#
-# Replace every `TEMPLATE:` placeholder before submitting to Palomar.
-# Replace a placeholder list with `[]` only where its adjacent comment permits it;
-# fields marked required by Palomar policy must remain nonempty.
-# See https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md
-# and https://github.com/mathlib-initiative/formalization.yaml for the full specification.
-
 version: "v0.4"
 
 project:
-  name: "TEMPLATE: concise public title of the formalized result"
+  name: "Erdős Problem 14 (Parts (i) and (ii)): Uniform square-root lower bound for non-unique sums"
   description: >-
-    TEMPLATE: concise public abstract of the mathematical content and principal
-    results of this formalization (at most 10,000 characters).
-  # Required nonempty list of HUMAN author names (strings).
-  # Do NOT list AI models, agents, or tools here; credit those under `automation.methods`.
+    An independent Lean 4 / Mathlib formalization of the theorem of Liam Kruer and Jensen
+    Kohlmeyer (2026) resolving both parts of Erdős Problem 14. For every A subset N and every
+    N >= 2 * 10000^4, the number of integers in {1, ..., N} not uniquely representable as an
+    unordered sum of two elements of A is at least sqrt(N) / 6000. This establishes Part (i)
+    (nonUniqueSumCount A >> N^(1/2 - eps) for all eps > 0) and refutes Part (ii) (no A has
+    nonUniqueSumCount A = o(sqrt(N))). Both compared declarations match
+    `FormalConjectures/ErdosProblems/14.lean` verbatim.
   authors:
-    - "TEMPLATE: human formalizer name"
-  # Must match the root Apache-2.0 `LICENSE` file exactly.
+    - "Maxence Faldor"
   license: "Apache-2.0"
-  # Required nonempty list of HUMAN maintainer names (strings).
   responsible_maintainers:
-    - "TEMPLATE: human maintainer responsible for this formalization"
-
-# Omit `repository` when this repository contains the substantive proof development
-# (the standard case when working directly on a branch/fork of `palomar_prepare`).
-# Uncomment ONLY if this repository is a thin Comparator wrapper around another repo:
-# repository:
-#   substantive_formalization:
-#     id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
-#     revision: "TEMPLATE: full 40-character lowercase commit SHA"
+    - "Maxence Faldor"
 
 classification:
-  # Required: 1 to 8 official arXiv subject identifiers (e.g. "math.NT", "math.CO").
   arxiv:
-    - "TEMPLATE: official arXiv category such as math.NT"
-  # Optional (recommended): up to 8 MSC2020 codes (e.g. "11B25", "05C35").
-  # Tip: map the `@[AMS ...]` tags from the original Formal Conjectures file to 2- or 5-char MSC2020 codes.
+    - "math.NT"
+    - "math.CO"
   msc2020:
-    - "TEMPLATE: MSC2020 code such as 11B25"
+    - "11B13"
+    - "11B30"
 
 sources:
-  # Required nonempty list. Every entry needs `title` and `relationship`
-  # (`formalizes`, `adapts`, `independently-proves`, `background`, or `other`).
-  # If `type` is included, Palomar requires one of:
-  #   `paper`, `book`, `web discussion`, `folklore`, `original-proof`, or `other`.
-  #
-  # Choose ONE result origin:
-  # 1. Original proof first presented by this formalization:
-  #    Include an entry with `type: original-proof` and `relationship: other`, and use
-  #    `background` or `other` for all additional context/problem-statement sources
-  #    (such as Erdős Problems, an open-problem paper, OEIS, or MathOverflow).
-  # 2. Source-based formalization (formalizing or adapting an existing paper/preprint, or
-  #    giving a new proof of an already published theorem):
-  #    Omit `type: original-proof`, and give at least one mathematical source a
-  #    `formalizes`, `adapts`, or `independently-proves` relationship.
-  #
-  # Use `authors` strictly for bibliographic authors; use `contributors` (with `name` and
-  # `role`, e.g. `problem-proposer` or `editor`) for other roles.
-  - title: "TEMPLATE: title of the mathematical source (or description of original proof)"
+  - title: "A uniform square-root lower bound for non-unique sums and a resolution of Erdős problem 14"
     authors:
-      - "TEMPLATE: bibliographic author name (or remove `authors` if inapplicable)"
-    # contributors:
-    #   - name: "TEMPLATE: contributor name"
-    #     role: "TEMPLATE: role, e.g. problem-proposer or editor"
-    id: "TEMPLATE: arXiv ID, DOI, URL, or citation (remove if original-proof)"
-    type: "TEMPLATE: paper | book | web discussion | folklore | original-proof | other"
-    location: "TEMPLATE: theorem/problem number, section, or URL"
-    relationship: "TEMPLATE: formalizes | adapts | independently-proves | background | other"
-    note: "TEMPLATE: optional detail explaining relationship or nuances (or remove)"
-    author_endorsement: "TEMPLATE: participated | endorsed | no-response | not-contacted | declined | n/a | other"
+      - "Liam Kruer"
+      - "Jensen Kohlmeyer"
+    id: "https://liamkruer.com/assets/work/conjectures/problems/erdos-14/paper/proof.pdf"
+    type: "paper"
+    location: "Main Theorem (uniform sqrt(N) lower bound), September 13, 2026 draft"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
+    note: >-
+      Independent Lean 4 formalization establishing the uniform bound
+      nonUniqueSumCount A N >= (1 / 6000) * sqrt(N) for N >= 2 * 10000^4, implying both
+      Part (i) and the negation of Part (ii).
+  - title: "Erdős Problem 14"
+    contributors:
+      - name: "Thomas Bloom"
+        role: "editor"
+      - name: "Paul Erdős"
+        role: "problem-proposer"
+      - name: "András Sárközy"
+        role: "problem-proposer"
+    id: "https://www.erdosproblems.com/14"
+    type: "web discussion"
+    location: "Problem 14"
+    relationship: "background"
+    author_endorsement: "not-contacted"
 
 related_formalizations:
-  # Link back to the Formal Conjectures repository and commit where the problem statement originated.
-  - id: "https://github.com/google-deepmind/formal-conjectures"
+  - id: "https://github.com/google-deepmind/formal-conjectures/blob/5bd8bfb9def462c19a87d2d275af3db3341dc727/FormalConjectures/ErdosProblems/14.lean"
     relationship: "builds-on"
-    note: "TEMPLATE: Proves `<declaration>` from `FormalConjectures/<Source>/<File>.lean` (commit `<sha>`)."
+    note: >-
+      Proves `Erdos14.erdos_14.parts.i` and refutes `Erdos14.erdos_14.parts.ii` verbatim from
+      `FormalConjectures/ErdosProblems/14.lean` at commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`.
+  - id: "https://liamkruer.com/assets/work/erdos-14-source.zip"
+    relationship: "independent"
+    note: >-
+      The authors' archive contains unchecked Lean files (`Erdos14_PartI.lean`,
+      `Erdos14_PartII_Counterexample.lean`); this submission was formalized independently.
+  - id: "https://conjectures.io/results/adb53fba-0b01-4398-abab-cb9b2176eebc/solution"
+    relationship: "independent"
+    note: >-
+      Separate Conjectures.io Lean 4 proof of the negative Part (ii) statement (not registered
+      on Palomar); our submission proves both Part (i) and Part (ii) in a single Palomar entry.
 
 status:
   scope: >-
-    TEMPLATE: state clearly what is proved in `Solution.lean` vs `Challenge.lean`,
-    including any adaptations, domain restrictions, or omitted variants.
-  # Count unresolved sorries in the proof development ONLY (excluding deliberate `sorry` in `Challenge.lean`).
-  # Must be 0 for a complete Palomar proof submission.
+    Proves both `Erdos14.erdos_14.parts.i` and the negation of `Erdos14.erdos_14.parts.ii`
+    from the uniform lower bound `uniform_sqrt_lower_bound`.
   sorry_count: 0
   sorry_in_definitions: 0
-  # List all axioms used by the proved declarations (check with `#print axioms <decl>`).
-  # Palomar permits only `propext`, `Classical.choice`, and `Quot.sound`.
   axioms:
-    - "TEMPLATE: list axioms from `#print axioms`, e.g. propext, Classical.choice, Quot.sound, or []"
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
 
 automation:
-  # Required nonempty list. Record every material human/AI phase honestly.
   methods:
-    - method: "TEMPLATE: manual | copilot | agent | autonomous | other"
+    - method: "agent"
       models:
-        - "TEMPLATE: model identifier(s) used, or replace this list with [] for manual work"
-      framework: "TEMPLATE: agent/prover harness or tool name, or remove if manual"
-      tool_setup: "TEMPLATE: details on prover, tactics, editors, or orchestration used"
-      cost:
-        wall_time: "TEMPLATE: approximate elapsed time (optional)"
-        spend_usd: "TEMPLATE: approximate compute/API spend or not tracked (optional)"
-        hardware: "TEMPLATE: hardware used (optional)"
-      prompting_notes: "TEMPLATE: brief notes on task specification or prompting (optional)"
-  notes: "TEMPLATE: concise summary of how human authors and automated tools collaborated"
+        - "Gemini"
 
 fidelity:
   divergences: >-
-    TEMPLATE: document any differences between `Challenge.lean`, the original Formal Conjectures
-    statement, and the informal source (or state "None known").
+    None relative to `FormalConjectures/ErdosProblems/14.lean` at commit 5bd8bfb9def462c19a87d2d275af3db3341dc727.
+    `allUniqueSums` and the `≫` notation are inlined verbatim from `FormalConjecturesForMathlib`.
 
 review:
-  # Review completed BEFORE submitting to Palomar (`unchecked`, `self-assessed`, `agent-reviewed`,
-  # `peer-reviewed`, `author-verified`, etc.).
-  status: "TEMPLATE: pre-submission review status, e.g. self-assessed"
+  status: "self-assessed"
   reviewers: []
-  notes: "TEMPLATE: describe statement and boundary-case audits performed before submission"
+  notes: >-
+    Definitions and both theorem statements checked verbatim against
+    `FormalConjectures/ErdosProblems/14.lean` (commit 5bd8bfb9def462c19a87d2d275af3db3341dc727); axioms checked.
 
 alignment:
-  namespace: "TEMPLATE: root namespace of the problem/proof, e.g. Erdos123"
+  namespace: "Erdos14"
   statements:
-    - source: "TEMPLATE: informal problem/theorem identifier in the cited source"
-      lean: "TEMPLATE: fully qualified Lean declaration name in Challenge.lean and Solution.lean"
+    - source: "Erdős Problem 14, Part (i); Kruer and Kohlmeyer (2026)"
+      lean: "Erdos14.erdos_14.parts.i"
       module: "Challenge"
       status: "proved"
-      note: "TEMPLATE: correspondence notes and boundary-case verification"
+      note: "Proved via `uniform_sqrt_lower_bound` (constant 1/6000 for N >= 2 * 10000^4)."
+    - source: "Erdős Problem 14, Part (ii) (negation); Kruer and Kohlmeyer (2026)"
+      lean: "Erdos14.erdos_14.parts.ii"
+      module: "Challenge"
+      status: "proved"
+      note: "Exact negation of Part (ii), contradicting `IsLittleO` with threshold `1/12000`."
 
-acknowledgements: "TEMPLATE: optional credits for libraries (Mathlib, Formal Conjectures), tools, and discussions"
+acknowledgements: "Built on Mathlib and google-deepmind/formal-conjectures."
