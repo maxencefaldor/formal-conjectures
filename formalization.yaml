@@ -8,9 +8,10 @@ project:
     Kohlmeyer (2026) resolving both parts of Erdős Problem 14. For every A subset N and every
     N >= 2 * 10000^4, the number of integers in {1, ..., N} not uniquely representable as an
     unordered sum of two elements of A is at least sqrt(N) / 6000. This establishes Part (i)
-    (nonUniqueSumCount A >> N^(1/2 - eps) for all eps > 0) and refutes Part (ii) (no A has
-    nonUniqueSumCount A = o(sqrt(N))). Both compared declarations match
-    `FormalConjectures/ErdosProblems/14.lean` verbatim.
+    (nonUniqueSumCount A >> N^(1/2 - eps) for all eps > 0) and refutes the Part (ii) question
+    (no A has nonUniqueSumCount A = o(sqrt(N))). The compared declarations in `Challenge.lean`
+    match `FormalConjectures/ErdosProblems/14.lean` for Part (i) and state the exact negation
+    of the open existential question for Part (ii).
   authors:
     - "Maxence Faldor"
   license: "Apache-2.0"
@@ -38,7 +39,7 @@ sources:
     note: >-
       Independent Lean 4 formalization establishing the uniform bound
       nonUniqueSumCount A N >= (1 / 6000) * sqrt(N) for N >= 2 * 10000^4, implying both
-      Part (i) and the negation of Part (ii).
+      Part (i) and the negative answer to Part (ii).
   - title: "Erdős Problem 14"
     contributors:
       - name: "Thomas Bloom"
@@ -57,8 +58,10 @@ related_formalizations:
   - id: "https://github.com/google-deepmind/formal-conjectures/blob/5bd8bfb9def462c19a87d2d275af3db3341dc727/FormalConjectures/ErdosProblems/14.lean"
     relationship: "builds-on"
     note: >-
-      Proves `Erdos14.erdos_14.parts.i` and refutes `Erdos14.erdos_14.parts.ii` verbatim from
-      `FormalConjectures/ErdosProblems/14.lean` at commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`.
+      Proves `Erdos14.erdos_14.parts.i` (matching the affirmative Part (i) declaration in
+      `FormalConjectures/ErdosProblems/14.lean` at commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`)
+      and proves the negative Part (ii) declaration `Erdos14.erdos_14.parts.ii` (which states the
+      negation of the open existential question in that commit).
   - id: "https://liamkruer.com/assets/work/erdos-14-source.zip"
     relationship: "independent"
     note: >-
@@ -68,12 +71,15 @@ related_formalizations:
     relationship: "independent"
     note: >-
       Separate Conjectures.io Lean 4 proof of the negative Part (ii) statement (not registered
-      on Palomar); our submission proves both Part (i) and Part (ii) in a single Palomar entry.
+      on Palomar); our submission proves both the affirmative Part (i) declaration and the
+      negative Part (ii) declaration in a single Palomar entry.
 
 status:
   scope: >-
-    Proves both `Erdos14.erdos_14.parts.i` and the negation of `Erdos14.erdos_14.parts.ii`
-    from the uniform lower bound `uniform_sqrt_lower_bound`.
+    Proves both compared declarations in `Challenge.lean`, `Erdos14.erdos_14.parts.i` (the
+    affirmative Part (i) statement) and `Erdos14.erdos_14.parts.ii` (the negative Part (ii)
+    statement `¬ ∃ (A : Set ℕ), IsLittleO atTop (nonUniqueSumCount A) squareRoot`), from the
+    internal uniform lower bound `uniform_sqrt_lower_bound`.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
@@ -89,15 +95,20 @@ automation:
 
 fidelity:
   divergences: >-
-    None relative to `FormalConjectures/ErdosProblems/14.lean` at commit 5bd8bfb9def462c19a87d2d275af3db3341dc727.
-    `allUniqueSums` and the `≫` notation are inlined verbatim from `FormalConjecturesForMathlib`.
+    None for Part (i); `Erdos14.erdos_14.parts.ii` states the exact negation of the open
+    existential question in `FormalConjectures/ErdosProblems/14.lean` at commit
+    5bd8bfb9def462c19a87d2d275af3db3341dc727 (following the repository's convention for negatively
+    answered `question` declarations). `allUniqueSums` and the `≫` notation are inlined verbatim
+    from `FormalConjecturesForMathlib`.
 
 review:
   status: "self-assessed"
   reviewers: []
   notes: >-
-    Definitions and both theorem statements checked verbatim against
-    `FormalConjectures/ErdosProblems/14.lean` (commit 5bd8bfb9def462c19a87d2d275af3db3341dc727); axioms checked.
+    Definitions and both theorem statements checked against
+    `FormalConjectures/ErdosProblems/14.lean` (commit 5bd8bfb9def462c19a87d2d275af3db3341dc727),
+    with `erdos_14.parts.ii` stated as the exact negation of the open existential question;
+    axioms checked.
 
 alignment:
   namespace: "Erdos14"
@@ -106,11 +117,11 @@ alignment:
       lean: "Erdos14.erdos_14.parts.i"
       module: "Challenge"
       status: "proved"
-      note: "Proved via `uniform_sqrt_lower_bound` (constant 1/6000 for N >= 2 * 10000^4)."
-    - source: "Erdős Problem 14, Part (ii) (negation); Kruer and Kohlmeyer (2026)"
+      note: "Proves the affirmative Part (i) declaration via `uniform_sqrt_lower_bound` (constant 1/6000 for N >= 2 * 10000^4)."
+    - source: "Erdős Problem 14, Part (ii) (negative answer); Kruer and Kohlmeyer (2026)"
       lean: "Erdos14.erdos_14.parts.ii"
       module: "Challenge"
       status: "proved"
-      note: "Exact negation of Part (ii), contradicting `IsLittleO` with threshold `1/12000`."
+      note: "Proves the negative Part (ii) declaration (`¬ ∃ A, IsLittleO atTop (nonUniqueSumCount A) squareRoot`), contradicting `IsLittleO` with threshold `1/12000`."
 
 acknowledgements: "Built on Mathlib and google-deepmind/formal-conjectures."

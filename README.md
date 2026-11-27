@@ -1,8 +1,9 @@
 # Erdős Problem 14 (Parts (i) and (ii))
 
 This repository packages an independent Lean 4 / Mathlib formalization resolving **both parts
-of Erdős Problem 14** (`Erdos14.erdos_14.parts.i` affirmatively and `Erdos14.erdos_14.parts.ii`
-negatively) for the [Palomar Registry](https://palomar-registry.org/), matching
+of Erdős Problem 14**, proving the affirmative Part (i) declaration (`Erdos14.erdos_14.parts.i`)
+and the negative Part (ii) declaration (`Erdos14.erdos_14.parts.ii`, stating the negation of the
+open existential question) for the [Palomar Registry](https://palomar-registry.org/), based on
 [`google-deepmind/formal-conjectures`](https://github.com/google-deepmind/formal-conjectures)
 (`FormalConjectures/ErdosProblems/14.lean`, commit `5bd8bfb9def462c19a87d2d275af3db3341dc727`).
 
@@ -76,7 +77,7 @@ In `Solution.lean`, the argument proceeds in three stages:
 
 ## Scope and Verification
 
-- Proves both Part (i) and Part (ii) in a single Palomar entry (unlike open PR #8214, which
+- Proves both the affirmative Part (i) declaration and the negative Part (ii) declaration in a single Palomar entry (unlike open PR #8214, which
   currently links only an external non-Palomar proof of Part (ii) with the Palomar linter
   disabled and has no formal proof link for Part (i)).
 - Zero `sorry`, zero `native_decide`, standard axioms only (`propext`, `Classical.choice`,
